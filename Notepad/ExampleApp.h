@@ -8,6 +8,7 @@
 
 #include "AppBase.h"
 #include "Buffers.h"
+#include "Model.h"
 
 namespace hlab {
 
@@ -48,7 +49,10 @@ namespace hlab {
 		ComPtr<ID3D11Buffer> m_constantBuffer;
 		UINT m_indexCount;
 
-		MVP m_constantBufferData;
+		//MVP m_constantBufferData;
+		GlobalConstants m_globalConstsCPU;
+		ComPtr<ID3D11Buffer> m_globalConstsGPU;
+		Model m_model;
 
 		bool m_usePerspectiveProjection = true;
 	};

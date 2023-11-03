@@ -11,7 +11,8 @@ using namespace Microsoft::WRL;
 class D3D11Utils
 {
 public:
-	static void CreateIndexBuffer(const ComPtr<ID3D11Device>& device, const std::vector<uint32_t>& indices, ComPtr<ID3D11Buffer>& indexBuffer) {
+	static void CreateIndexBuffer(const ComPtr<ID3D11Device>& device, const std::vector<uint32_t>& indices, ComPtr<ID3D11Buffer>& indexBuffer)
+	{
 
 		D3D11_BUFFER_DESC desc{};
 		desc.ByteWidth = sizeof(uint32_t) * indices.size();
@@ -30,7 +31,8 @@ public:
 	}
 
 	template<typename T_VERTEX>
-	static void CreateVertexBuffer(const ComPtr<ID3D11Device>& device, const std::vector<T_VERTEX>& vertices, ComPtr<ID3D11Buffer>& vertexBuffer) {
+	static void CreateVertexBuffer(const ComPtr<ID3D11Device>& device, const std::vector<T_VERTEX>& vertices, ComPtr<ID3D11Buffer>& vertexBuffer)
+	{
 
 		D3D11_BUFFER_DESC desc{};
 		desc.ByteWidth = sizeof(T_VERTEX) * vertices.size();
@@ -49,7 +51,8 @@ public:
 	}
 
 	template<typename T_CONSTANT>
-	static void CreateConstantBuffer(const ComPtr<ID3D11Device>& device, const T_CONSTANT& constantBufferData, ComPtr<ID3D11Buffer>& constantBuffer) {
+	static void CreateConstantBuffer(const ComPtr<ID3D11Device>& device, const T_CONSTANT& constantBufferData, ComPtr<ID3D11Buffer>& constantBuffer)
+	{
 
 		D3D11_BUFFER_DESC desc{};
 		desc.ByteWidth = sizeof(T_CONSTANT);
@@ -68,7 +71,8 @@ public:
 		}
 	}
 
-	static void CreateVertexShaderAndInputLayout(const ComPtr<ID3D11Device>& device, const std::wstring& vertexShaderFileName, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputElements, ComPtr<ID3D11VertexShader>& vertexShader, ComPtr<ID3D11InputLayout>& inputLayout) {
+	static void CreateVertexShaderAndInputLayout(const ComPtr<ID3D11Device>& device, const std::wstring& vertexShaderFileName, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputElements, ComPtr<ID3D11VertexShader>& vertexShader, ComPtr<ID3D11InputLayout>& inputLayout)
+	{
 
 		ID3DBlob* shaderBlob;
 		ID3DBlob* errorBlob;
@@ -97,7 +101,8 @@ public:
 		}
 	}
 
-	static void CreateHullShader(const ComPtr<ID3D11Device>& device, const std::wstring& fileName, ComPtr<ID3D11HullShader>& hullShader) {
+	static void CreateHullShader(const ComPtr<ID3D11Device>& device, const std::wstring& fileName, ComPtr<ID3D11HullShader>& hullShader)
+	{
 
 		ID3DBlob* shaderBlob;
 		ID3DBlob* errorBlob;
@@ -114,7 +119,8 @@ public:
 		}
 	}
 
-	static void CreateDomainShader(const ComPtr<ID3D11Device>& device, const std::wstring& fileName, ComPtr<ID3D11DomainShader>& domainShader) {
+	static void CreateDomainShader(const ComPtr<ID3D11Device>& device, const std::wstring& fileName, ComPtr<ID3D11DomainShader>& domainShader)
+	{
 
 		ID3DBlob* shaderBlob;
 		ID3DBlob* errorBlob;
@@ -131,7 +137,8 @@ public:
 		}
 	}
 
-	static void CreateGeometryShader(const ComPtr<ID3D11Device>& device, const std::wstring& fileName, ComPtr<ID3D11GeometryShader>& geometryShader) {
+	static void CreateGeometryShader(const ComPtr<ID3D11Device>& device, const std::wstring& fileName, ComPtr<ID3D11GeometryShader>& geometryShader)
+	{
 
 		ID3DBlob* shaderBlob;
 		ID3DBlob* errorBlob;
@@ -148,7 +155,8 @@ public:
 		}
 	}
 
-	static void CreatePixelShader(const ComPtr<ID3D11Device>& device, const std::wstring& fileName, ComPtr<ID3D11PixelShader>& pixleShader) {
+	static void CreatePixelShader(const ComPtr<ID3D11Device>& device, const std::wstring& fileName, ComPtr<ID3D11PixelShader>& pixleShader)
+	{
 
 		ID3DBlob* shaderBlob;
 		ID3DBlob* errorBlob;
@@ -165,18 +173,31 @@ public:
 		}
 	}
 
+	template<typename T_CONSTANT>
+	static void UpdateBuffer(const ComPtr<ID3D11DeviceContext>& context, const T_CONSTANT& source, ComPtr<ID3D11Buffer>& dest)
+	{
+		D3D11_MAPPED_SUBRESOURCE ms{};
+		context->Map(dest.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &ms);
+		memcpy(ms.pData, &source, sizeof(T_CONSTANT));
+		context->Unmap(dest.Get(), NULL);
+	}
+
 	//void CreateTexture2D(const ComPtr<ID3D11Device>& device, )
 
 private:
-	static void CheckResult(HRESULT hr, ID3DBlob* errorBlob) {
-		if (FAILED(hr)) {
+	static void CheckResult(HRESULT hr, ID3DBlob* errorBlob)
+	{
+		if (FAILED(hr))
+		{
 			// 파일이 없을 경우
-			if ((hr & D3D11_ERROR_FILE_NOT_FOUND) != 0) {
+			if ((hr & D3D11_ERROR_FILE_NOT_FOUND) != 0)
+			{
 				std::cout << "File not found." << std::endl;
 			}
 
 			// 에러 메시지가 있으면 출력
-			if (errorBlob) {
+			if (errorBlob)
+			{
 				std::cout << "Shader compile error\n" << (char*)errorBlob->GetBufferPointer() << std::endl;
 			}
 		}

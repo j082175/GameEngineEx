@@ -9,6 +9,7 @@
 #include <vector>
 #include <windows.h>
 #include <wrl.h> // ComPtr
+#include "Camera.h"
 
 namespace hlab {
 
@@ -43,66 +44,7 @@ namespace hlab {
 		bool InitMainWindow();
 		bool InitDirect3D();
 		bool InitGUI();
-		void CreateVertexShaderAndInputLayout(const wstring& filename,
-			const vector<D3D11_INPUT_ELEMENT_DESC>& inputElements,
-			ComPtr<ID3D11VertexShader>& vertexShader,
-			ComPtr<ID3D11InputLayout>& inputLayout);
-		void CreatePixelShader(const wstring& filename, ComPtr<ID3D11PixelShader>& pixelShader);
-		void CreateIndexBuffer(const vector<uint32_t>& indices, ComPtr<ID3D11Buffer>& m_indexBuffer);
 
-		template <typename T_VERTEX>
-		void CreateVertexBuffer(const vector<T_VERTEX>& vertices, ComPtr<ID3D11Buffer>& vertexBuffer) {
-
-			// D3D11_USAGE enumeration (d3d11.h)
-			// https://learn.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_usage
-
-			D3D11_BUFFER_DESC bufferDesc;
-			ZeroMemory(&bufferDesc, sizeof(bufferDesc));
-			bufferDesc.Usage = D3D11_USAGE_IMMUTABLE; // 초기화 후 변경X
-			bufferDesc.ByteWidth = UINT(sizeof(T_VERTEX) * vertices.size());
-			bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-			bufferDesc.CPUAccessFlags = 0; // 0 if no CPU access is necessary.
-			bufferDesc.StructureByteStride = sizeof(T_VERTEX);
-
-			D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 }; // MS 예제에서 초기화하는 방식
-			vertexBufferData.pSysMem = vertices.data();
-			vertexBufferData.SysMemPitch = 0;
-			vertexBufferData.SysMemSlicePitch = 0;
-
-			const HRESULT hr =
-				m_device->CreateBuffer(&bufferDesc, &vertexBufferData, vertexBuffer.GetAddressOf());
-			if (FAILED(hr)) {
-				std::cout << "CreateBuffer() failed. " << std::hex << hr << std::endl;
-			};
-		}
-
-		template <typename T_CONSTANT>
-		void CreateConstantBuffer(const T_CONSTANT& constantBufferData,
-			ComPtr<ID3D11Buffer>& constantBuffer) {
-			D3D11_BUFFER_DESC cbDesc;
-			cbDesc.ByteWidth = sizeof(constantBufferData);
-			cbDesc.Usage = D3D11_USAGE_DYNAMIC;
-			cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-			cbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			cbDesc.MiscFlags = 0;
-			cbDesc.StructureByteStride = 0;
-
-			// Fill in the subresource data.
-			D3D11_SUBRESOURCE_DATA InitData;
-			InitData.pSysMem = &constantBufferData;
-			InitData.SysMemPitch = 0;
-			InitData.SysMemSlicePitch = 0;
-
-			m_device->CreateBuffer(&cbDesc, &InitData, constantBuffer.GetAddressOf());
-		}
-
-		template <typename T_DATA>
-		void UpdateBuffer(const T_DATA& bufferData, ComPtr<ID3D11Buffer>& buffer) {
-			D3D11_MAPPED_SUBRESOURCE ms;
-			m_context->Map(buffer.Get(), NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-			memcpy(ms.pData, &bufferData, sizeof(bufferData));
-			m_context->Unmap(buffer.Get(), NULL);
-		}
 
 	public:
 		// 변수 이름 붙이는 규칙은 VS DX11/12 기본 템플릿을 따릅니다.
@@ -111,6 +53,7 @@ namespace hlab {
 		int m_screenWidth; // 렌더링할 최종 화면의 해상도
 		int m_screenHeight;
 		HWND m_mainWindow;
+		Camera m_camera;
 
 		ComPtr<ID3D11Device> m_device;
 		ComPtr<ID3D11DeviceContext> m_context;

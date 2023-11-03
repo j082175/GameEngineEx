@@ -32,6 +32,8 @@ namespace hlab {
 		m_screenViewport(D3D11_VIEWPORT()) {
 
 		g_appBase = this;
+
+		m_camera.SetAspectRatio(m_screenWidth, m_screenHeight);
 	}
 
 	AppBase::~AppBase() {
@@ -474,70 +476,5 @@ namespace hlab {
 	// 확장자 cso는 Compiled Shader Object를 의미합니다.
 	// 여기서는 쉐이더 파일을 읽어들여서 컴파일합니다.
 
-	void CheckResult(HRESULT hr, ID3DBlob* errorBlob) {
-		if (FAILED(hr)) {
-			// 파일이 없을 경우
-			if ((hr & D3D11_ERROR_FILE_NOT_FOUND) != 0) {
-				cout << "File not found." << endl;
-			}
-
-			// 에러 메시지가 있으면 출력
-			if (errorBlob) {
-				cout << "Shader compile error\n" << (char*)errorBlob->GetBufferPointer() << endl;
-			}
-		}
-	}
-
-	void AppBase::CreateVertexShaderAndInputLayout(
-		const wstring& filename, const vector<D3D11_INPUT_ELEMENT_DESC>& inputElements,
-		ComPtr<ID3D11VertexShader>& vertexShader, ComPtr<ID3D11InputLayout>& inputLayout) {
-
-		ComPtr<ID3DBlob> shaderBlob;
-		ComPtr<ID3DBlob> errorBlob;
-
-		// 주의: 쉐이더의 시작점의 이름이 "main"인 함수로 지정
-		HRESULT hr =
-			D3DCompileFromFile(filename.c_str(), 0, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "vs_5_0", 0, 0, &shaderBlob, &errorBlob);
-
-		CheckResult(hr, errorBlob.Get());
-
-		m_device->CreateVertexShader(shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), NULL,
-			&vertexShader);
-
-		m_device->CreateInputLayout(inputElements.data(), UINT(inputElements.size()),
-			shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(),
-			&inputLayout);
-	}
-
-	void AppBase::CreatePixelShader(const wstring& filename, ComPtr<ID3D11PixelShader>& pixelShader) {
-		ComPtr<ID3DBlob> shaderBlob;
-		ComPtr<ID3DBlob> errorBlob;
-
-		// 주의: 쉐이더의 시작점의 이름이 "main"인 함수로 지정
-		HRESULT hr =
-			D3DCompileFromFile(filename.c_str(), 0, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_5_0", 0, 0, &shaderBlob, &errorBlob);
-
-		CheckResult(hr, errorBlob.Get());
-
-		m_device->CreatePixelShader(shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), NULL,
-			&pixelShader);
-	}
-
-	void AppBase::CreateIndexBuffer(const std::vector<uint32_t>& indices,
-		ComPtr<ID3D11Buffer>& m_indexBuffer) {
-		D3D11_BUFFER_DESC bufferDesc = {};
-		bufferDesc.Usage = D3D11_USAGE_IMMUTABLE; // 초기화 후 변경X
-		bufferDesc.ByteWidth = UINT(sizeof(uint32_t) * indices.size());
-		bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		bufferDesc.CPUAccessFlags = 0; // 0 if no CPU access is necessary.
-		bufferDesc.StructureByteStride = sizeof(uint32_t);
-
-		D3D11_SUBRESOURCE_DATA indexBufferData = { 0 };
-		indexBufferData.pSysMem = indices.data();
-		indexBufferData.SysMemPitch = 0;
-		indexBufferData.SysMemSlicePitch = 0;
-
-		m_device->CreateBuffer(&bufferDesc, &indexBufferData, m_indexBuffer.GetAddressOf());
-	}
 
 } // namespace hlab

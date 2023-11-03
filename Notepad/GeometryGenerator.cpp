@@ -39,11 +39,11 @@ MeshData GeometryGenerator::MakeSquare(const float scale,
 	for (size_t i = 0; i < positions.size(); i++) {
 		Vertex v;
 		v.position = positions[i];
-		//v.normalModel = normals[i];
-		//v.texcoord = texcoords[i] * texScale;
-		//v.tangentModel = Vector3(1.0f, 0.0f, 0.0f);
+		v.normalModel = normals[i];
+		v.texcoord = texcoords[i] * texScale;
+		v.tangentModel = Vector3(1.0f, 0.0f, 0.0f);
 
-		 v.color = colors[i];
+		 //v.color = colors[i];
 
 		meshData.vertices.push_back(v);
 	}
@@ -153,7 +153,8 @@ MeshData GeometryGenerator::MakeBox()
 	for (size_t i = 0; i < positions.size(); i++) {
 		Vertex v;
 		v.position = positions[i];
-		v.color = colors[i];
+		v.normalModel = normals[i];
+		//v.color = colors[i];
 		vertices.push_back(v);
 	}
 
