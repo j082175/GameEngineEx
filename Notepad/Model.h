@@ -9,16 +9,17 @@ class Model
 public:
 	Model() {};
 
-	Model(const ComPtr<ID3D11Device>& device, const ComPtr<ID3D11DeviceContext>& context)
-		: m_device(device), m_context(context)
+	Model(const ComPtr<ID3D11Device>& device, const ComPtr<ID3D11DeviceContext>& context, const MeshData& meshData)
+		: m_device(device), m_context(context), m_indexCount(0)
 	{
 		//Initialize(device, context);
+		Initialize(meshData);
 	}
 
-	void Initialize(const ComPtr<ID3D11Device>& device, const ComPtr<ID3D11DeviceContext>& context, const MeshData& meshData)
+	void Initialize(const MeshData& meshData)
 	{
-		m_device = device;
-		m_context = context;
+		//m_device = device;
+		//m_context = context;
 
 
 		D3D11Utils::CreateVertexBuffer(m_device, meshData.vertices, m_vertexBuffer);

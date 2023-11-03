@@ -52,7 +52,7 @@ namespace hlab {
 		//MVP m_constantBufferData;
 		GlobalConstants m_globalConstsCPU;
 		ComPtr<ID3D11Buffer> m_globalConstsGPU;
-		Model m_model;
+		std::vector<std::shared_ptr<Model>> m_basicList;
 
 		bool m_usePerspectiveProjection = true;
 	};
