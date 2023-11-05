@@ -6,6 +6,11 @@
 #include <wrl.h>
 #include <iostream>
 
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image.h"
+#include "stb_image_write.h"
+
 using namespace Microsoft::WRL;
 
 class D3D11Utils
@@ -185,6 +190,21 @@ public:
 	//void CreateTexture2D(const ComPtr<ID3D11Device>& device, )
 
 private:
+	static void ReadImage(const std::string& fileName, std::vector<uint8_t>& image, int& width, int& height)
+	{
+		int width;
+		int height;
+		int channel;
+
+		unsigned char* img = stbi_load(fileName.c_str(), &width, &height, &channel, 0);
+
+		std::cout << "ReadImage() : " << fileName << ' ' <<  width << ' ' << height << ' ' << channel << '\n';
+
+		image.resize(width * height * 4);
+		
+
+	}
+
 	static void CheckResult(HRESULT hr, ID3DBlob* errorBlob)
 	{
 		if (FAILED(hr))

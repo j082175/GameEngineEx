@@ -11,7 +11,8 @@
 #include <wrl.h> // ComPtr
 #include "Camera.h"
 
-namespace hlab {
+namespace hlab
+{
 
 	using Microsoft::WRL::ComPtr;
 	using std::vector;
@@ -19,31 +20,31 @@ namespace hlab {
 
 	// 모든 예제들이 공통적으로 사용할 기능들을 가지고 있는
 	// 부모 클래스
-	class AppBase {
+	class AppBase
+	{
 	public:
 		AppBase();
 		virtual ~AppBase();
-
-		float GetAspectRatio() const;
-
 		int Run();
+		virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+
+	protected: // 상속 받은 클래스에서도 접근 가능
 		virtual bool Initialize();
 		virtual void UpdateGUI() = 0;
 		virtual void Update(float dt) = 0;
 		virtual void Render() = 0;
 
-		virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+		bool InitMainWindow();
+		bool InitDirect3D();
+		bool InitGUI();
 
+		float GetAspectRatio() const;
 		// Convenience overrides for handling mouse input.
 		virtual void OnMouseDown(WPARAM btnState, int x, int y) {};
 		virtual void OnMouseUp(WPARAM btnState, int x, int y) {};
 		virtual void OnMouseMove(WPARAM btnState, int x, int y) {};
-
-	protected: // 상속 받은 클래스에서도 접근 가능
-		bool InitMainWindow();
-		bool InitDirect3D();
-		bool InitGUI();
+	private:
 
 
 	public:
@@ -55,10 +56,11 @@ namespace hlab {
 		HWND m_mainWindow;
 		Camera m_camera;
 
+		ComPtr<IDXGISwapChain> m_swapChain;
 		ComPtr<ID3D11Device> m_device;
 		ComPtr<ID3D11DeviceContext> m_context;
+
 		ComPtr<ID3D11RenderTargetView> m_renderTargetView;
-		ComPtr<IDXGISwapChain> m_swapChain;
 		ComPtr<ID3D11RasterizerState> m_rasterizerSate;
 
 		// Depth buffer 관련
