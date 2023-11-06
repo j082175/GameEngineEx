@@ -76,13 +76,13 @@ public:
 		}
 	}
 
-	static void CreateVertexShaderAndInputLayout(const ComPtr<ID3D11Device>& device, const std::wstring& vertexShaderFileName, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputElements, ComPtr<ID3D11VertexShader>& vertexShader, ComPtr<ID3D11InputLayout>& inputLayout)
+	static void CreateVertexShaderAndInputLayout(const ComPtr<ID3D11Device>& device, const std::wstring& vertexShaderfilename, const std::vector<D3D11_INPUT_ELEMENT_DESC>& inputElements, ComPtr<ID3D11VertexShader>& vertexShader, ComPtr<ID3D11InputLayout>& inputLayout)
 	{
 
 		ID3DBlob* shaderBlob;
 		ID3DBlob* errorBlob;
 
-		HRESULT hr = D3DCompileFromFile(vertexShaderFileName.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "vs_5_0", 0, 0, &shaderBlob, &errorBlob);
+		HRESULT hr = D3DCompileFromFile(vertexShaderfilename.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "vs_5_0", 0, 0, &shaderBlob, &errorBlob);
 
 		CheckResult(hr, errorBlob);
 
@@ -106,13 +106,13 @@ public:
 		}
 	}
 
-	static void CreateHullShader(const ComPtr<ID3D11Device>& device, const std::wstring& fileName, ComPtr<ID3D11HullShader>& hullShader)
+	static void CreateHullShader(const ComPtr<ID3D11Device>& device, const std::wstring& filename, ComPtr<ID3D11HullShader>& hullShader)
 	{
 
 		ID3DBlob* shaderBlob;
 		ID3DBlob* errorBlob;
 
-		HRESULT hr = D3DCompileFromFile(fileName.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "hs_5_0", 0, 0, &shaderBlob, &errorBlob);
+		HRESULT hr = D3DCompileFromFile(filename.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "hs_5_0", 0, 0, &shaderBlob, &errorBlob);
 
 		CheckResult(hr, errorBlob);
 
@@ -124,13 +124,13 @@ public:
 		}
 	}
 
-	static void CreateDomainShader(const ComPtr<ID3D11Device>& device, const std::wstring& fileName, ComPtr<ID3D11DomainShader>& domainShader)
+	static void CreateDomainShader(const ComPtr<ID3D11Device>& device, const std::wstring& filename, ComPtr<ID3D11DomainShader>& domainShader)
 	{
 
 		ID3DBlob* shaderBlob;
 		ID3DBlob* errorBlob;
 
-		HRESULT hr = D3DCompileFromFile(fileName.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ds_5_0", 0, 0, &shaderBlob, &errorBlob);
+		HRESULT hr = D3DCompileFromFile(filename.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ds_5_0", 0, 0, &shaderBlob, &errorBlob);
 
 		CheckResult(hr, errorBlob);
 
@@ -142,13 +142,13 @@ public:
 		}
 	}
 
-	static void CreateGeometryShader(const ComPtr<ID3D11Device>& device, const std::wstring& fileName, ComPtr<ID3D11GeometryShader>& geometryShader)
+	static void CreateGeometryShader(const ComPtr<ID3D11Device>& device, const std::wstring& filename, ComPtr<ID3D11GeometryShader>& geometryShader)
 	{
 
 		ID3DBlob* shaderBlob;
 		ID3DBlob* errorBlob;
 
-		HRESULT hr = D3DCompileFromFile(fileName.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "gs_5_0", 0, 0, &shaderBlob, &errorBlob);
+		HRESULT hr = D3DCompileFromFile(filename.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "gs_5_0", 0, 0, &shaderBlob, &errorBlob);
 
 		CheckResult(hr, errorBlob);
 
@@ -160,13 +160,13 @@ public:
 		}
 	}
 
-	static void CreatePixelShader(const ComPtr<ID3D11Device>& device, const std::wstring& fileName, ComPtr<ID3D11PixelShader>& pixleShader)
+	static void CreatePixelShader(const ComPtr<ID3D11Device>& device, const std::wstring& filename, ComPtr<ID3D11PixelShader>& pixleShader)
 	{
 
 		ID3DBlob* shaderBlob;
 		ID3DBlob* errorBlob;
 
-		HRESULT hr = D3DCompileFromFile(fileName.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_5_0", 0, 0, &shaderBlob, &errorBlob);
+		HRESULT hr = D3DCompileFromFile(filename.c_str(), NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_5_0", 0, 0, &shaderBlob, &errorBlob);
 
 		CheckResult(hr, errorBlob);
 
@@ -187,22 +187,81 @@ public:
 		context->Unmap(dest.Get(), NULL);
 	}
 
-	//void CreateTexture2D(const ComPtr<ID3D11Device>& device, )
+	void CreateTexture2D(const std::string& device, const std::string& filename, ComPtr<ID3D11Texture2D>& texture, ComPtr<ID3D11ShaderResourceView>& shaderResourceView)
+	{
+		int width;
+		int height;
+		std::vector<uint8_t> image;
+
+		ReadImage(filename, image, width, height);
+
+
+	}
+
+	ComPtr<ID3D11Texture2D> CreateStagingTexture(const ComPtr<ID3D11Device>& device, const ComPtr<ID3D11DeviceContext>& context, const std::vector<uint8_t>& image, int width, int height, const DXGI_FORMAT pixelFormat = DXGI_FORMAT_R8G8B8A8_UNORM, const int mipLevels = 1, const int arraySize = 1)
+	{
+		D3D11_TEXTURE2D_DESC desc{};
+		desc.Width = width;
+		desc.Height = height;
+		desc.MipLevels = mipLevels;
+		desc.ArraySize = arraySize;
+		desc.Format = pixelFormat;
+		desc.SampleDesc.Count = 1;
+		desc.Usage = D3D11_USAGE_STAGING;
+		desc.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
+		desc.MiscFlags = 0;
+
+		ComPtr<ID3D11Texture2D> stagingTexture;
+		
+		HRESULT hr = device->CreateTexture2D(&desc, NULL, stagingTexture.GetAddressOf());
+		if (FAILED(hr))
+		{
+			std::cout << "CreateStagintTexture2D Failed!!" << '\n';
+		}
+
+		D3D11_MAPPED_SUBRESOURCE ms{};
+		context->Map()
+	}
 
 private:
-	static void ReadImage(const std::string& fileName, std::vector<uint8_t>& image, int& width, int& height)
+	static void ReadImage(const std::string& filename, std::vector<uint8_t>& image, int& width, int& height)
 	{
 		int width;
 		int height;
 		int channel;
 
-		unsigned char* img = stbi_load(fileName.c_str(), &width, &height, &channel, 0);
+		unsigned char* img = stbi_load(filename.c_str(), &width, &height, &channel, 0);
 
-		std::cout << "ReadImage() : " << fileName << ' ' <<  width << ' ' << height << ' ' << channel << '\n';
+		std::cout << "ReadImage() : " << filename << ' ' << width << ' ' << height << ' ' << channel << '\n';
 
 		image.resize(width * height * 4);
-		
 
+		if (channel == 1 || channel == 2)
+		{
+			std::cout << "ReadImage channel is 1 or 2!!!" << '\n';
+		}
+		else if (channel == 3)
+		{
+			for (size_t i = 0; i < width * height; i++)
+			{
+				for (size_t c = 0; c < 3; c++)
+				{
+					image[4 * i + c] = img[channel * i + c];
+				}
+
+				image[4 * i + 3] = 255;
+			}
+		}
+		else if (channel == 4)
+		{
+			for (size_t i = 0; i < width * height; i++)
+			{
+				for (size_t c = 0; c < 4; c++)
+				{
+					image[4 * i + c] = img[i * channel + c];
+				}
+			}
+		}
 	}
 
 	static void CheckResult(HRESULT hr, ID3DBlob* errorBlob)
