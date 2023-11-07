@@ -61,6 +61,7 @@ MeshData GeometryGenerator::MakeBox()
 	vector<Vector3> positions;
 	vector<Vector3> colors;
 	vector<Vector3> normals;
+	vector<Vector2> texcoords;
 
 	const float scale = 1.f;
 
@@ -77,6 +78,10 @@ MeshData GeometryGenerator::MakeBox()
 	normals.push_back(Vector3(0.0f, 1.0f, 0.0f));
 	normals.push_back(Vector3(0.0f, 1.0f, 0.0f));
 	normals.push_back(Vector3(0.0f, 1.0f, 0.0f));
+	texcoords.push_back(Vector2(0.0f, 0.0f));
+	texcoords.push_back(Vector2(1.0f, 0.0f));
+	texcoords.push_back(Vector2(1.0f, 1.0f));
+	texcoords.push_back(Vector2(0.0f, 1.0f));
 
 	// ¾Æ·§¸é
 	positions.push_back(Vector3(-1.0f, -1.0f, -1.0f) * scale);
@@ -91,6 +96,10 @@ MeshData GeometryGenerator::MakeBox()
 	normals.push_back(Vector3(0.0f, -1.0f, 0.0f));
 	normals.push_back(Vector3(0.0f, -1.0f, 0.0f));
 	normals.push_back(Vector3(0.0f, -1.0f, 0.0f));
+	texcoords.push_back(Vector2(0.0f, 0.0f));
+	texcoords.push_back(Vector2(1.0f, 0.0f));
+	texcoords.push_back(Vector2(1.0f, 1.0f));
+	texcoords.push_back(Vector2(0.0f, 1.0f));
 
 	// ¾Õ¸é
 	positions.push_back(Vector3(-1.0f, -1.0f, -1.0f) * scale);
@@ -105,6 +114,10 @@ MeshData GeometryGenerator::MakeBox()
 	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
 	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
 	normals.push_back(Vector3(0.0f, 0.0f, -1.0f));
+	texcoords.push_back(Vector2(0.0f, 0.0f));
+	texcoords.push_back(Vector2(1.0f, 0.0f));
+	texcoords.push_back(Vector2(1.0f, 1.0f));
+	texcoords.push_back(Vector2(0.0f, 1.0f));
 
 	// µÞ¸é
 	positions.push_back(Vector3(-1.0f, -1.0f, 1.0f) * scale);
@@ -119,6 +132,10 @@ MeshData GeometryGenerator::MakeBox()
 	normals.push_back(Vector3(0.0f, 0.0f, 1.0f));
 	normals.push_back(Vector3(0.0f, 0.0f, 1.0f));
 	normals.push_back(Vector3(0.0f, 0.0f, 1.0f));
+	texcoords.push_back(Vector2(0.0f, 0.0f));
+	texcoords.push_back(Vector2(1.0f, 0.0f));
+	texcoords.push_back(Vector2(1.0f, 1.0f));
+	texcoords.push_back(Vector2(0.0f, 1.0f));
 
 	// ¿ÞÂÊ
 	positions.push_back(Vector3(-1.0f, -1.0f, 1.0f) * scale);
@@ -133,6 +150,10 @@ MeshData GeometryGenerator::MakeBox()
 	normals.push_back(Vector3(-1.0f, 0.0f, 0.0f));
 	normals.push_back(Vector3(-1.0f, 0.0f, 0.0f));
 	normals.push_back(Vector3(-1.0f, 0.0f, 0.0f));
+	texcoords.push_back(Vector2(0.0f, 0.0f));
+	texcoords.push_back(Vector2(1.0f, 0.0f));
+	texcoords.push_back(Vector2(1.0f, 1.0f));
+	texcoords.push_back(Vector2(0.0f, 1.0f));
 
 	// ¿À¸¥ÂÊ
 	positions.push_back(Vector3(1.0f, -1.0f, 1.0f) * scale);
@@ -147,6 +168,10 @@ MeshData GeometryGenerator::MakeBox()
 	normals.push_back(Vector3(1.0f, 0.0f, 0.0f));
 	normals.push_back(Vector3(1.0f, 0.0f, 0.0f));
 	normals.push_back(Vector3(1.0f, 0.0f, 0.0f));
+	texcoords.push_back(Vector2(0.0f, 0.0f));
+	texcoords.push_back(Vector2(1.0f, 0.0f));
+	texcoords.push_back(Vector2(1.0f, 1.0f));
+	texcoords.push_back(Vector2(0.0f, 1.0f));
 
 
 	vector<Vertex> vertices;
@@ -155,6 +180,7 @@ MeshData GeometryGenerator::MakeBox()
 		v.position = positions[i];
 		v.normalModel = normals[i];
 		//v.color = colors[i];
+		v.texcoord = texcoords[i];
 		vertices.push_back(v);
 	}
 

@@ -8,6 +8,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{e7a569c5-5b69-4687-ab47-6f3036fb6864}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{59c5813b-71e9-455a-80d2-1166a0941a1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -15,8 +18,12 @@
     <ClCompile Include="ExampleApp.cpp" />
     <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="D3D11Utils.cpp" />
-    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="GraphicsCommon.cpp" />
+    <ClCompile Include="GraphicsPSO.cpp" />
+    <ClCompile Include="Model.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshData.h" />
@@ -25,9 +32,13 @@
     <ClInclude Include="ExampleApp.h" />
     <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="D3D11Utils.h" />
-    <ClInclude Include="Model.h" />
     <ClInclude Include="ConstantBuffers.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="GraphicsCommon.h" />
+    <ClInclude Include="GraphicsPSO.h" />
+    <ClInclude Include="Model.h">
+      <Filter>Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicVS.hlsl">

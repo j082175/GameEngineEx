@@ -1,9 +1,10 @@
-//cbuffer MVP : register(b0)
-//{
-//	matrix model;
-//	matrix view;
-//	matrix proj;
-//}
+SamplerState linearWrapSS : register(s0);
+SamplerState linearClampSS : register(s1);
+SamplerState shadowPointSS : register(s2);
+SamplerState shadowCompareSS : register(s3); // s3
+SamplerState pointWrapSS : register(s4); // s4
+SamplerState linearMirrorSS : register(s5); // s5
+SamplerState pointClampSS : register(s6); // s6
 
 cbuffer MeshConstants : register(b1)
 {
@@ -48,4 +49,5 @@ struct PSInput
 {
 	float4 posProj : SV_POSITION;
 	float3 normal : NORMAL;
+	float2 texcoord : TEXCOORD;
 };

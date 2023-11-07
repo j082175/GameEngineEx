@@ -1,27 +1,5 @@
 #include "Common.hlsli"
 
-//cbuffer ModelViewProjectionConstantBuffer : register(b0)
-//{
-//	matrix model;
-//	matrix view;
-//	matrix projection;
-//};
-
-//// Semantics
-//// https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-semantics
-
-//struct VertexShaderInput
-//{
-//	float3 pos : POSITION;
-//	float3 color : COLOR0;
-//};
-
-//struct PixelShaderInput
-//{
-//	float4 pos : SV_POSITION;
-//	float3 color : COLOR;
-//};
-
 PSInput main(VSInput input)
 {
 
@@ -32,6 +10,8 @@ PSInput main(VSInput input)
 
 	output.posProj = pos;
 	output.normal = input.normalModel;
+	
+	output.texcoord = input.texcoord;
 
 	return output;
 }

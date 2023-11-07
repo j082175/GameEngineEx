@@ -18,8 +18,9 @@ namespace hlab
 			return false;
 
 		MeshData meshData = GeometryGenerator::MakeBox();
+		//MeshData meshData = GeometryGenerator::MakeSquare(1.f, Vector2(1.f));
 
-		D3D11Utils::CreateConstantBuffer(m_device, m_globalConstsCPU, m_globalConstsGPU);
+		D3D11Utils::CreateConstBuffer(m_device, m_globalConstsCPU, m_globalConstsGPU);
 
 		//Model model1(m_device, m_context, meshData);
 		//m_model.Initialize(m_device, m_context, meshData);
